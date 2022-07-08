@@ -58,12 +58,16 @@ with col1 :
         output = {"question": user_input, "answer": answer, "parsed_context" : parsed_context, "context" : context , "article_reference" : article_reference}
         print(output)
         st.session_state.past.append(user_input)
-        st.session_state.generated.append(output['answer']['answer'])
+        print(output)
+        if 'answer' in output['answer']:
+            st.session_state.generated.append(output['answer']['answer'])
+            ARTICLES = output["parsed_context"]
+            ARTICLES_REFERENCE = output["article_reference"]
+            START = output['answer']['start']
+            END = output['answer']['end']
+        else:
+            st.session_state.generated.append(f"Error : {output['answer']['error']}")
 
-        ARTICLES = output["parsed_context"]
-        ARTICLES_REFERENCE = output["article_reference"]
-        START = output['answer']['start']
-        END = output['answer']['end']
 
     if st.session_state['generated']:
         for i in range(len(st.session_state['generated'])-1, -1, -1):

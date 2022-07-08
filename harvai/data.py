@@ -8,14 +8,16 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import simplemma
 
-from harvai.params import get_path_data, get_path_json, get_path_json_digits
-from harvai.preprocessing import article_number,article_content,article_lower,remove_numbers,remove_punctuation,remove_stopwords, tfidf_format,Lemmatize
+from harvai.params import *
+from harvai.preprocessing import *
+
 
 def get_clean_preproc_data(digits=False):
     code_brut = get_data()
     cleaned_data = clean_data(code_brut)
     preproc_data = preprocessing_data(cleaned_data,digits)
     return preproc_data
+
 
 def get_data(online=False):
     code_brut = ''
@@ -27,8 +29,10 @@ def get_data(online=False):
             code_brut += Pages.extractText()
     return code_brut
 
+
 def clean_data(code_brut):
-    # Regex de recherche des items à retirer
+
+    # Regex to remove non valid text
     partie_names = re.findall(r"(Partie .*)",code_brut)
     section_names = re.findall(r"(Section \d*\w*? : .*)",code_brut)
     soussection_names = re.findall(r"(Sous-section \d*\w*? : .*)",code_brut)
@@ -36,7 +40,7 @@ def clean_data(code_brut):
     titre_names = re.findall(r"(Titre \d*\w*? : .*)",code_brut)
     chapitre_names = re.findall(r"(Chapitre \d*\w*? : .*)",code_brut)
 
-    # Remplacements
+    # Replacements
     for i in partie_names:
         code_brut = code_brut.replace(i,"")
     for i in section_names:
@@ -56,13 +60,14 @@ def clean_data(code_brut):
 
     articles = re.findall(r"(Article \w\d*-?\d.*?(?=Article))",code_brut) # split la string par article pour en faire une liste d'articles
 
-    # depuis la liste d'articles vers un dataframe
+    # Populate dataframe with clean articles
     dict_articles = {}
     for i in range(len(articles)):
         dict_articles[i] = articles[i]
     data = pd.DataFrame.from_dict(dict_articles, orient='index',
                        columns=['article_base'])
     return data
+
 
 def preprocessing_data(data,digits=False):
     if digits == False :
@@ -95,8 +100,9 @@ def preprocessing_data(data,digits=False):
             data.to_json('../raw_data/data_preproc_digits.json')
         return data
 
+
 def preprocessing_user_input(user_input):
-    #nltk.download('stopwords','punkt')
+
     user_input = user_input.lower() # article_lower
     user_input = ''.join([i for i in user_input if not i.isdigit()]) # remove number
 
@@ -110,16 +116,12 @@ def preprocessing_user_input(user_input):
 
     user_input = " ".join([str(word) for word in user_input]) # tfidf_format
 
-    #version originale
-    #langdata = simplemma.load_data('fr')
-    #user_input = simplemma.text_lemmatizer(user_input,langdata)
-
-    #version docker
     user_input = simplemma.text_lemmatizer(user_input,lang='fr')
     user_input = " ".join([str(word) for word in user_input])
 
     return user_input
 
+
 if __name__ == '__main__':
-    #code_brut = get_data()
+
     preprocessing_user_input('test de user imput')

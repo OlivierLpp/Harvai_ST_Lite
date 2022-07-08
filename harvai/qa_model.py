@@ -32,11 +32,10 @@ def get_answer(question,retriever,article_number,digits=False):
 
     context, parsed_context , article_reference = get_context(question, retriever,article_number,digits)
     output = query({
-	"inputs": {
-		"question": question,
-		"context": context
-	},
-    })
+                    "inputs": {
+                    "question": question,
+                    "context": context},
+                    })
 
     return output, parsed_context , context , article_reference
 

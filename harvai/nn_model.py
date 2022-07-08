@@ -4,6 +4,7 @@ from harvai.data import get_clean_preproc_data
 
 
 class Nn_model():
+
     def __init__(self,article_number,digits=False):
         self.data = None
         self.model = None
@@ -27,7 +28,7 @@ class Nn_model():
         input = self.vectorizer.transform([question])
         self.articles = list(self.model.kneighbors(input, return_distance=False)[0])
 
-    def get_articles_parsed(self): # Liste d'articles
+    def get_articles_parsed(self):
         articles_parsed = []
         article = self.articles[0:self.article_number]
         for i in article:
