@@ -1,0 +1,12 @@
+streamlit
+streamlit-chat==0.0.2.1
+requests
+numpy
+pandas
+python-decouple
+
+# NLP
+regex
+nltk
+PyPDF2
+simplemma==0.7.0
