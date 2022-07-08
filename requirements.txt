@@ -1,9 +1,34 @@
-streamlit
-streamlit-chat==0.0.2.1
-requests
+# packaging
+pip>=9
+setuptools>=26
+twine
+wheel>=0.29
+
+# data science
 numpy
 pandas
+scikit-learn
+
+# tests/linter
+black
+coverage
+flake8
+pytest
+yapf
+
+# API
+uvicorn
+fastapi
+gcsfs
+s3fs
+streamlit
+streamlit-chat==0.0.2.1
 python-decouple
+
+# utilities
+six>=1.14
+termcolor
+
 
 # NLP
 regex
