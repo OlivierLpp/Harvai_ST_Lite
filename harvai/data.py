@@ -3,6 +3,7 @@ import PyPDF2
 import re
 import os
 import string
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 import simplemma
